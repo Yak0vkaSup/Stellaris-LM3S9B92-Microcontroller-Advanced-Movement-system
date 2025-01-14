@@ -132,11 +132,11 @@ ENCODER_INIT
 	
 	; velocity timer
 	ldr r6, = QEI0_BASE+QEILOAD_OFFSET
-	ldr  r0, = 0xF423FF ; 16MHZ-1
+	ldr  r0, = 0x98967FF ; 16MHZ*10-1
 	str r0, [r6]
 	  
 	ldr r6, = QEI1_BASE+QEILOAD_OFFSET
-	ldr  r0, = 0xF423FF ; 16MHZ-1
+	ldr  r0, = 0x98967FF ; 16MHZ*10-1
 	str r0, [r6]
 	
 	; STEP 5 

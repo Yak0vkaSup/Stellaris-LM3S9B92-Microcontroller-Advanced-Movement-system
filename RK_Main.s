@@ -42,7 +42,10 @@ PWM1CMPA		EQU		PWM_BASE+0x098
 		IMPORT INTERRUPT_INIT
 		IMPORT INTERRUPT_HANDLER_0
 		IMPORT INTERRUPT_HANDLER_1
-		
+		IMPORT main_loop
+		IMPORT init_globals
+		EXPORT read_position
+			
 		
 __main
 
@@ -76,19 +79,25 @@ __main
 		mov r1, #0
 		str r1, [r6]
 		
-		ldr	r6, =PWM0CMPA 
-		mov	r0, #0x199
-		str	r0, [r6]  
+
 		
 		ldr	r6, =PWM1CMPA 
 		mov	r0,	#0x199
 		str	r0, [r6] 
 		
 		;BL LED2_ON
-		
+		bl init_globals
+		b loop
+
 loop	
-		BL	MOTEUR_DROIT_ON
-		BL	MOTEUR_GAUCHE_ON
+		bl main_loop
+		cmp r0, #0x0
+		BLEQ loop
+		;BL	MOTEUR_DROIT_ON
+		;BL	MOTEUR_GAUCHE_ON
+		
+loop2
+		b loop2
 		
 		ldr r5, = QEI0_BASE+QEIPOS_OFFSET ; right
 		ldr r0, [r5]
@@ -118,6 +127,17 @@ loop
 		BLGT MOTEUR_GAUCHE_ARRIERE; Branch if Greater Than (N = 0 and Z = 0) 
 		
 		B loop
+set_pwm
+		ldr	r1, =PWM0CMPA 
+		mov	r0, #0x199
+		str	r0, [r1]  
+
+read_position
+		;ldr r1, [r0, #QEIPOS_OFFSET] ; right
+		mov r1, #QEIPOS_OFFSET
+		add r0, r1
+		ldr r0, [r1]
+		bx lr
 
 PWM_CONFIG_GT5
 		ldr	r6, =PWM0CMPA 

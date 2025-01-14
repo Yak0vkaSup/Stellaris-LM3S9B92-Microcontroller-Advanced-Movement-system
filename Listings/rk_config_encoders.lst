@@ -213,11 +213,11 @@ T
   132 0000008C         
   133 0000008C         ; velocity timer
   134 0000008C 4E18            ldr              r6, = QEI0_BASE+QEILOAD_OFFSET
-  135 0000008E 4819            ldr              r0, = 0xF423FF ; 16MHZ-1
+  135 0000008E 4819            ldr              r0, = 0x98967FF ; 16MHZ*10-1
   136 00000090 6030            str              r0, [r6]
   137 00000092         
   138 00000092 4E19            ldr              r6, = QEI1_BASE+QEILOAD_OFFSET
-  139 00000094 4817            ldr              r0, = 0xF423FF ; 16MHZ-1
+  139 00000094 4817            ldr              r0, = 0x98967FF ; 16MHZ*10-1
   140 00000096 6030            str              r0, [r6]
   141 00000098         
   142 00000098         ; STEP 5 
@@ -285,7 +285,7 @@ ARM Macro Assembler    Page 5
               4002452C 
               4002652C 
               4002C010 
-              00F423FF 
+              098967FF 
               4002D010 
               4002C00C 
               4002C000 

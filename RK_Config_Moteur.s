@@ -260,59 +260,59 @@ MOTEUR_INIT
 ;qu'on controle, pas les blocks PWM0 et PWM1!!!
 MOTEUR_DROIT_ON
 		;Enable sortie PWM0 (bit 0), p1145 
-		ldr	r6,	=PWMENABLE
-		ldr r0, [r6]
+		ldr	r1,	=PWMENABLE
+		ldr r0, [r1]
 		orr r0,	#0x01 ;bit 0 à 1
-		str	r0,	[r6]
+		str	r0,	[r1]
 		BX	LR
 
 MOTEUR_DROIT_OFF 
-		ldr	r6,	=PWMENABLE
-		ldr r0,	[r6]
+		ldr	r1,	=PWMENABLE
+		ldr r0,	[r1]
 		and	r0,	#0x0E	;bit 0 à 0
-		str	r0,	[r6]
+		str	r0,	[r1]
 		BX LR
 
 MOTEUR_GAUCHE_ON
-		ldr	r6,	=PWMENABLE
-		ldr	r0, [r6]
+		ldr	r1,	=PWMENABLE
+		ldr	r0, [r1]
 		orr	r0,	#0x04	;bit 2 à 1
-		str	r0,	[r6]
+		str	r0,	[r1]
 		BX LR
 
 MOTEUR_GAUCHE_OFF
-		ldr	r6,	=PWMENABLE
-		ldr	r0,	[r6]
+		ldr	r1,	=PWMENABLE
+		ldr	r0,	[r1]
 		and	r0,	#0x0B	;bit 2 à 0
-		str	r0,	[r6]
+		str	r0,	[r1]
 		BX	LR
 
 MOTEUR_DROIT_ARRIERE
 		;Inverse Direction (GPIO_D1)
-		ldr	r6, =(GPIODATA_D+(GPIO_1<<2)) 
+		ldr	r1, =(GPIODATA_D+(GPIO_1<<2)) 
 		mov	r0, #0
-		str	r0,[r6]
+		str	r0,[r1]
 		BX	LR
 
 MOTEUR_DROIT_AVANT
 		;Inverse Direction (GPIO_D1)
-		ldr	r6, =(GPIODATA_D+(GPIO_1<<2)) 
+		ldr	r1, =(GPIODATA_D+(GPIO_1<<2)) 
 		mov	r0, #2
-		str	r0,[r6]
+		str	r0,[r1]
 		BX	LR
 
 MOTEUR_GAUCHE_ARRIERE
 		;Inverse Direction (GPIO_D1)
-		ldr	r6, =(GPIODATA_H+(GPIO_1<<2)) 
+		ldr	r1, =(GPIODATA_H+(GPIO_1<<2)) 
 		mov	r0, #2 ; contraire du moteur Droit
-		str	r0,[r6]
+		str	r0,[r1]
 		BX	LR		
 
 MOTEUR_GAUCHE_AVANT
 		;Inverse Direction (GPIO_D1)
-		ldr	r6, =(GPIODATA_H+(GPIO_1<<2)) 
+		ldr	r1, =(GPIODATA_H+(GPIO_1<<2)) 
 		mov	r0, #0
-		str	r0,[r6]
+		str	r0,[r1]
 		BX	LR		
 
 MOTEUR_DROIT_INVERSE

@@ -485,38 +485,38 @@ ARM Macro Assembler    Page 8
   260 00000108         ;qu'on controle, pas les blocks PWM0 et PWM1!!!
   261 00000108         MOTEUR_DROIT_ON
   262 00000108         ;Enable sortie PWM0 (bit 0), p1145 
-  263 00000108 4E35            ldr              r6, =PWMENABLE
-  264 0000010A 6830            ldr              r0, [r6]
+  263 00000108 4935            ldr              r1, =PWMENABLE
+  264 0000010A 6808            ldr              r0, [r1]
   265 0000010C F040 0001       orr              r0, #0x01   ;bit 0 à 1
-  266 00000110 6030            str              r0, [r6]
+  266 00000110 6008            str              r0, [r1]
   267 00000112 4770            BX               LR
   268 00000114         
   269 00000114         MOTEUR_DROIT_OFF
-  270 00000114 4E32            ldr              r6, =PWMENABLE
-  271 00000116 6830            ldr              r0, [r6]
+  270 00000114 4932            ldr              r1, =PWMENABLE
+  271 00000116 6808            ldr              r0, [r1]
   272 00000118 F000 000E       and              r0, #0x0E   ;bit 0 à 0
-  273 0000011C 6030            str              r0, [r6]
+  273 0000011C 6008            str              r0, [r1]
   274 0000011E 4770            BX               LR
   275 00000120         
   276 00000120         MOTEUR_GAUCHE_ON
-  277 00000120 4E2F            ldr              r6, =PWMENABLE
-  278 00000122 6830            ldr              r0, [r6]
+  277 00000120 492F            ldr              r1, =PWMENABLE
+  278 00000122 6808            ldr              r0, [r1]
   279 00000124 F040 0004       orr              r0, #0x04   ;bit 2 à 1
-  280 00000128 6030            str              r0, [r6]
+  280 00000128 6008            str              r0, [r1]
   281 0000012A 4770            BX               LR
   282 0000012C         
   283 0000012C         MOTEUR_GAUCHE_OFF
-  284 0000012C 4E2C            ldr              r6, =PWMENABLE
-  285 0000012E 6830            ldr              r0, [r6]
+  284 0000012C 492C            ldr              r1, =PWMENABLE
+  285 0000012E 6808            ldr              r0, [r1]
   286 00000130 F000 000B       and              r0, #0x0B   ;bit 2 à 0
-  287 00000134 6030            str              r0, [r6]
+  287 00000134 6008            str              r0, [r1]
   288 00000136 4770            BX               LR
   289 00000138         
   290 00000138         MOTEUR_DROIT_ARRIERE
   291 00000138         ;Inverse Direction (GPIO_D1)
-  292 00000138 4E2A            ldr              r6, =(GPIODATA_D+(GPIO_1<<2))
+  292 00000138 492A            ldr              r1, =(GPIODATA_D+(GPIO_1<<2))
   293 0000013A F04F 0000       mov              r0, #0
-  294 0000013E 6030            str              r0,[r6]
+  294 0000013E 6008            str              r0,[r1]
   295 00000140 4770            BX               LR
 
 
@@ -527,24 +527,24 @@ ARM Macro Assembler    Page 9
   296 00000142         
   297 00000142         MOTEUR_DROIT_AVANT
   298 00000142         ;Inverse Direction (GPIO_D1)
-  299 00000142 4E28            ldr              r6, =(GPIODATA_D+(GPIO_1<<2))
+  299 00000142 4928            ldr              r1, =(GPIODATA_D+(GPIO_1<<2))
   300 00000144 F04F 0002       mov              r0, #2
-  301 00000148 6030            str              r0,[r6]
+  301 00000148 6008            str              r0,[r1]
   302 0000014A 4770            BX               LR
   303 0000014C         
   304 0000014C         MOTEUR_GAUCHE_ARRIERE
   305 0000014C         ;Inverse Direction (GPIO_D1)
-  306 0000014C 4E23            ldr              r6, =(GPIODATA_H+(GPIO_1<<2))
+  306 0000014C 4923            ldr              r1, =(GPIODATA_H+(GPIO_1<<2))
   307 0000014E F04F 0002       mov              r0, #2      ; contraire du mote
                                                             ur Droit
-  308 00000152 6030            str              r0,[r6]
+  308 00000152 6008            str              r0,[r1]
   309 00000154 4770            BX               LR
   310 00000156         
   311 00000156         MOTEUR_GAUCHE_AVANT
   312 00000156         ;Inverse Direction (GPIO_D1)
-  313 00000156 4E21            ldr              r6, =(GPIODATA_H+(GPIO_1<<2))
+  313 00000156 4921            ldr              r1, =(GPIODATA_H+(GPIO_1<<2))
   314 00000158 F04F 0000       mov              r0, #0
-  315 0000015C 6030            str              r0,[r6]
+  315 0000015C 6008            str              r0,[r1]
   316 0000015E 4770            BX               LR
   317 00000160         
   318 00000160         MOTEUR_DROIT_INVERSE

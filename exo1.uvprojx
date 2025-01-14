@@ -412,6 +412,16 @@
               <FileType>2</FileType>
               <FilePath>.\RK_InterruptHandler.s</FilePath>
             </File>
+            <File>
+              <FileName>Rk_test_c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Rk_test_c.c</FilePath>
+            </File>
+            <File>
+              <FileName>Definitions.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\Definitions.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
