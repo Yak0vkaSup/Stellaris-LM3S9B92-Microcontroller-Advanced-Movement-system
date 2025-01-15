@@ -29,7 +29,9 @@ PWM1CMPA		EQU		PWM_BASE+0x098
 		EXPORT INTERRUPT_HANDLER_0
 		EXPORT INTERRUPT_HANDLER_1
 		EXPORT PORTD_INTERRUPT_HANDLER
-		
+		IMPORT main_loop
+		IMPORT loop2
+			
 INTERRUPT_INIT
 
 	ldr r6, = EN0
@@ -52,21 +54,44 @@ INTERRUPT_INIT
 	BX LR
 
 PORTD_INTERRUPT_HANDLER
-	ldr r1, = GPIO_PORTD_BASE+GPIOMIS_OFFSET
-	ldr r0, [r1]
-	cbz r0, exit_portd_hadler
-	
-	ldr r2, = GPIO_PORTD_BASE+GPIOICR_OFFSET
-	mov r0, 0xC0
-	str r0, [r2]
-	
-	ldr   r2, =GPIO_PORTF_BASE + (LED1_BIT << 2)
-	ldr   r0, [r2]
-	eor r0, r0, #LED1_BIT
-	str   r0, [r2]
-	
-exit_portd_hadler
-	BX LR
+    ldr r1, = GPIO_PORTD_BASE + GPIOMIS_OFFSET  
+    ldr r0, [r1]                              
+    
+    cbz r0, exit_portd_handler                 ; Exit if no interrupt is active
+
+    tst r0, #0x40                              ; Check PD6 
+    bne handle_top_button                      
+
+    tst r0, #0x80                              ; Check PD7
+    bne handle_bottom_button                
+
+exit_portd_handler
+    bx lr                                      
+
+handle_top_button
+    ldr r2, = GPIO_PORTD_BASE + GPIOICR_OFFSET 
+    mov r0, #0x40                              
+    str r0, [r2]
+
+    ldr r3, = GPIO_PORTF_BASE + (LED1_BIT << 2)
+    ldr r0, [r3]
+    eor r0, r0, #LED1_BIT                      
+    str r0, [r3]
+
+    b exit_portd_handler                    
+
+handle_bottom_button
+    ldr r2, = GPIO_PORTD_BASE + GPIOICR_OFFSET 
+    mov r0, #0x80                              
+    str r0, [r2]
+
+    ldr r3, = GPIO_PORTF_BASE + (LED1_BIT << 2)
+    ldr r0, [r3]
+    eor r0, r0, #LED1_BIT                  
+    str r0, [r3]
+
+    b exit_portd_handler                   
+
 	
 INTERRUPT_HANDLER_0
 

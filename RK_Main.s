@@ -45,6 +45,8 @@ PWM1CMPA		EQU		PWM_BASE+0x098
 		IMPORT main_loop
 		IMPORT init_globals
 		EXPORT read_position
+		EXPORT loop2
+		IMPORT flag_main_loop
 			
 		
 __main
@@ -87,18 +89,17 @@ __main
 		
 		;BL LED2_ON
 		bl init_globals
-		b loop
+		;b loop
 
-loop	
-		bl main_loop
-		cmp r0, #0x0
-		BLEQ loop
+
 		;BL	MOTEUR_DROIT_ON
 		;BL	MOTEUR_GAUCHE_ON
 		
 loop2
+
 		b loop2
 		
+	
 		ldr r5, = QEI0_BASE+QEIPOS_OFFSET ; right
 		ldr r0, [r5]
 		
@@ -126,7 +127,7 @@ loop2
 		BLEQ MOTEUR_GAUCHE_OFF     ; Branch if Equal (Z = 1)
 		BLGT MOTEUR_GAUCHE_ARRIERE; Branch if Greater Than (N = 0 and Z = 0) 
 		
-		B loop
+		B loop2
 set_pwm
 		ldr	r1, =PWM0CMPA 
 		mov	r0, #0x199

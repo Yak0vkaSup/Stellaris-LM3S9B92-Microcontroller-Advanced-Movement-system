@@ -3,6 +3,7 @@
 		
 		EXPORT steps
 		EXPORT length_steps
+		EXPORT flag_main_loop
 			
 length_steps
 		DCD 0x4 ; length 
@@ -26,4 +27,5 @@ steps
 		DCD 0x80
 		DCD 100
 		DCD 200
-		
+flag_main_loop
+    DCD 0    
