@@ -5,16 +5,22 @@ Component: ARM Compiler 5.06 update 6 (build 750) Tool: armlink [4d35ed]
 Section Cross References
 
     rk_main.o(.text) refers (Special) to rk_interrupthandler.o(.text) for INTERRUPT_HANDLER_0
-    rk_main.o(.text) refers (Special) to definitions.o(.rodata) for flag_main_loop
-    rk_main.o(.text) refers (Special) to rk_test_c.o(i.main_loop) for main_loop
     rk_main.o(.text) refers to rk_config_boutons.o(.text) for BOUTON_INIT
     rk_main.o(.text) refers to rk_config_leds.o(.text) for LED_INIT
     rk_main.o(.text) refers to rk_config_moteur.o(.text) for MOTEUR_INIT
     rk_main.o(.text) refers to rk_config_encoders.o(.text) for ENCODER_INIT
     rk_main.o(.text) refers to rk_test_c.o(i.init_globals) for init_globals
+    rk_main.o(.text) refers to rk_test_c.o(i.main_loop) for main_loop
+    rk_main.o(.text) refers to rk_test_c.o(i.load_list) for load_list
+    rk_main.o(.text) refers to rk_test_c.o(.data) for button_top_flag
+    rk_main.o(.text) refers to definitions.o(.rodata) for list_A
     rk_interrupthandler.o(.text) refers (Special) to rk_test_c.o(i.main_loop) for main_loop
-    rk_test_c.o(i.init_globals) refers to definitions.o(.rodata) for steps
+    rk_interrupthandler.o(.text) refers to rk_test_c.o(i.handle_top_button_c) for handle_top_button_c
+    rk_interrupthandler.o(.text) refers to rk_test_c.o(i.handle_bottom_button_c) for handle_bottom_button_c
+    rk_test_c.o(i.handle_bottom_button_c) refers to rk_test_c.o(.data) for button_bottom_flag
+    rk_test_c.o(i.handle_top_button_c) refers to rk_test_c.o(.data) for button_top_flag
     rk_test_c.o(i.init_globals) refers to rk_test_c.o(.data) for Commands
+    rk_test_c.o(i.load_list) refers to rk_test_c.o(.data) for Commands
     rk_test_c.o(i.main_loop) refers to rk_test_c.o(i.limit_speed) for limit_speed
     rk_test_c.o(i.main_loop) refers to rk_test_c.o(i.limit_error) for limit_error
     rk_test_c.o(i.main_loop) refers to rk_config_moteur.o(.text) for MOTEUR_DROIT_ON
@@ -64,19 +70,24 @@ Image Symbol Table
     .text                                    0x000003d0   Section       72  rk_config_boutons.o(.text)
     .text                                    0x00000418   Section      104  rk_config_leds.o(.text)
     .text                                    0x00000480   Section      488  rk_config_moteur.o(.text)
-    .text                                    0x00000668   Section      232  rk_main.o(.text)
-    .text                                    0x00000750   Section      268  rk_config_encoders.o(.text)
-    .text                                    0x0000085c   Section      172  rk_interrupthandler.o(.text)
-    .text                                    0x00000908   Section       56  startup_armcm3.o(.text)
-    i.SystemInit                             0x00000940   Section        0  system_armcm3.o(i.SystemInit)
-    i.init_globals                           0x00000960   Section        0  rk_test_c.o(i.init_globals)
-    i.limit_error                            0x000009b0   Section        0  rk_test_c.o(i.limit_error)
-    i.limit_speed                            0x000009e6   Section        0  rk_test_c.o(i.limit_speed)
-    i.main_loop                              0x000009fc   Section        0  rk_test_c.o(i.main_loop)
-    .rodata                                  0x00000b5c   Section       72  definitions.o(.rodata)
-    .data                                    0x20000000   Section       28  rk_test_c.o(.data)
-    .data                                    0x2000001c   Section        4  system_armcm3.o(.data)
-    STACK                                    0x20000020   Section     1024  startup_armcm3.o(STACK)
+    .text                                    0x00000668   Section      312  rk_main.o(.text)
+    .text                                    0x000007a0   Section      268  rk_config_encoders.o(.text)
+    .text                                    0x000008ac   Section      184  rk_interrupthandler.o(.text)
+    .text                                    0x00000964   Section       56  startup_armcm3.o(.text)
+    i.SystemInit                             0x0000099c   Section        0  system_armcm3.o(i.SystemInit)
+    i.handle_bottom_button_c                 0x000009bc   Section        0  rk_test_c.o(i.handle_bottom_button_c)
+    i.handle_top_button_c                    0x000009d4   Section        0  rk_test_c.o(i.handle_top_button_c)
+    i.init_globals                           0x000009ec   Section        0  rk_test_c.o(i.init_globals)
+    i.limit_error                            0x00000a3c   Section        0  rk_test_c.o(i.limit_error)
+    i.limit_speed                            0x00000a72   Section        0  rk_test_c.o(i.limit_speed)
+    i.load_list                              0x00000a88   Section        0  rk_test_c.o(i.load_list)
+    i.main_loop                              0x00000adc   Section        0  rk_test_c.o(i.main_loop)
+    .rodata                                  0x00000c3c   Section       80  definitions.o(.rodata)
+    steps_A                                  0x00000c44   Data           0  definitions.o(.rodata)
+    steps_B                                  0x00000c6c   Data           0  definitions.o(.rodata)
+    .data                                    0x20000000   Section       36  rk_test_c.o(.data)
+    .data                                    0x20000024   Section        4  system_armcm3.o(.data)
+    STACK                                    0x20000028   Section     1024  startup_armcm3.o(STACK)
 
     Global Symbols
 
@@ -103,41 +114,43 @@ Image Symbol Table
     MOTEUR_DROIT_INVERSE                     0x000005e1   Thumb Code     0  rk_config_moteur.o(.text)
     MOTEUR_GAUCHE_INVERSE                    0x000005ed   Thumb Code     0  rk_config_moteur.o(.text)
     __main                                   0x00000669   Thumb Code     0  rk_main.o(.text)
-    loop2                                    0x000006af   Thumb Code     0  rk_main.o(.text)
-    read_position                            0x0000070f   Thumb Code     0  rk_main.o(.text)
-    ENCODER_INIT                             0x00000751   Thumb Code     0  rk_config_encoders.o(.text)
-    INTERRUPT_INIT                           0x0000085d   Thumb Code     0  rk_interrupthandler.o(.text)
-    PORTD_INTERRUPT_HANDLER                  0x00000877   Thumb Code     0  rk_interrupthandler.o(.text)
-    INTERRUPT_HANDLER_0                      0x000008b3   Thumb Code     0  rk_interrupthandler.o(.text)
-    INTERRUPT_HANDLER_1                      0x000008cb   Thumb Code     0  rk_interrupthandler.o(.text)
-    Reset_Handler                            0x00000909   Thumb Code     8  startup_armcm3.o(.text)
-    NMI_Handler                              0x00000911   Thumb Code     2  startup_armcm3.o(.text)
-    HardFault_Handler                        0x00000913   Thumb Code     2  startup_armcm3.o(.text)
-    MemManage_Handler                        0x00000915   Thumb Code     2  startup_armcm3.o(.text)
-    BusFault_Handler                         0x00000917   Thumb Code     2  startup_armcm3.o(.text)
-    UsageFault_Handler                       0x00000919   Thumb Code     2  startup_armcm3.o(.text)
-    SVC_Handler                              0x0000091b   Thumb Code     2  startup_armcm3.o(.text)
-    DebugMon_Handler                         0x0000091d   Thumb Code     2  startup_armcm3.o(.text)
-    PendSV_Handler                           0x0000091f   Thumb Code     2  startup_armcm3.o(.text)
-    SysTick_Handler                          0x00000921   Thumb Code     2  startup_armcm3.o(.text)
-    Interrupt0_Handler                       0x00000923   Thumb Code     2  startup_armcm3.o(.text)
-    Interrupt1_Handler                       0x00000925   Thumb Code     2  startup_armcm3.o(.text)
-    Interrupt2_Handler                       0x00000927   Thumb Code     2  startup_armcm3.o(.text)
-    Interrupt3_Handler                       0x00000929   Thumb Code     2  startup_armcm3.o(.text)
-    Interrupt4_Handler                       0x0000092b   Thumb Code     2  startup_armcm3.o(.text)
-    Interrupt5_Handler                       0x0000092d   Thumb Code     2  startup_armcm3.o(.text)
-    Interrupt6_Handler                       0x0000092f   Thumb Code     2  startup_armcm3.o(.text)
-    Interrupt7_Handler                       0x00000931   Thumb Code     2  startup_armcm3.o(.text)
-    Interrupt8_Handler                       0x00000933   Thumb Code     2  startup_armcm3.o(.text)
-    Interrupt9_Handler                       0x00000935   Thumb Code     2  startup_armcm3.o(.text)
-    SystemInit                               0x00000941   Thumb Code    14  system_armcm3.o(i.SystemInit)
-    init_globals                             0x00000961   Thumb Code    42  rk_test_c.o(i.init_globals)
-    limit_error                              0x000009b1   Thumb Code    54  rk_test_c.o(i.limit_error)
-    limit_speed                              0x000009e7   Thumb Code    22  rk_test_c.o(i.limit_speed)
-    main_loop                                0x000009fd   Thumb Code   312  rk_test_c.o(i.main_loop)
-    length_steps                             0x00000b5c   Data           0  definitions.o(.rodata)
-    steps                                    0x00000b60   Data           0  definitions.o(.rodata)
-    flag_main_loop                           0x00000ba0   Data           0  definitions.o(.rodata)
+    check_flag                               0x000006af   Thumb Code     0  rk_main.o(.text)
+    read_position                            0x0000074d   Thumb Code     0  rk_main.o(.text)
+    ENCODER_INIT                             0x000007a1   Thumb Code     0  rk_config_encoders.o(.text)
+    INTERRUPT_INIT                           0x000008ad   Thumb Code     0  rk_interrupthandler.o(.text)
+    PORTD_INTERRUPT_HANDLER                  0x000008c7   Thumb Code     0  rk_interrupthandler.o(.text)
+    INTERRUPT_HANDLER_0                      0x00000911   Thumb Code     0  rk_interrupthandler.o(.text)
+    INTERRUPT_HANDLER_1                      0x00000929   Thumb Code     0  rk_interrupthandler.o(.text)
+    Reset_Handler                            0x00000965   Thumb Code     8  startup_armcm3.o(.text)
+    NMI_Handler                              0x0000096d   Thumb Code     2  startup_armcm3.o(.text)
+    HardFault_Handler                        0x0000096f   Thumb Code     2  startup_armcm3.o(.text)
+    MemManage_Handler                        0x00000971   Thumb Code     2  startup_armcm3.o(.text)
+    BusFault_Handler                         0x00000973   Thumb Code     2  startup_armcm3.o(.text)
+    UsageFault_Handler                       0x00000975   Thumb Code     2  startup_armcm3.o(.text)
+    SVC_Handler                              0x00000977   Thumb Code     2  startup_armcm3.o(.text)
+    DebugMon_Handler                         0x00000979   Thumb Code     2  startup_armcm3.o(.text)
+    PendSV_Handler                           0x0000097b   Thumb Code     2  startup_armcm3.o(.text)
+    SysTick_Handler                          0x0000097d   Thumb Code     2  startup_armcm3.o(.text)
+    Interrupt0_Handler                       0x0000097f   Thumb Code     2  startup_armcm3.o(.text)
+    Interrupt1_Handler                       0x00000981   Thumb Code     2  startup_armcm3.o(.text)
+    Interrupt2_Handler                       0x00000983   Thumb Code     2  startup_armcm3.o(.text)
+    Interrupt3_Handler                       0x00000985   Thumb Code     2  startup_armcm3.o(.text)
+    Interrupt4_Handler                       0x00000987   Thumb Code     2  startup_armcm3.o(.text)
+    Interrupt5_Handler                       0x00000989   Thumb Code     2  startup_armcm3.o(.text)
+    Interrupt6_Handler                       0x0000098b   Thumb Code     2  startup_armcm3.o(.text)
+    Interrupt7_Handler                       0x0000098d   Thumb Code     2  startup_armcm3.o(.text)
+    Interrupt8_Handler                       0x0000098f   Thumb Code     2  startup_armcm3.o(.text)
+    Interrupt9_Handler                       0x00000991   Thumb Code     2  startup_armcm3.o(.text)
+    SystemInit                               0x0000099d   Thumb Code    14  system_armcm3.o(i.SystemInit)
+    handle_bottom_button_c                   0x000009bd   Thumb Code    14  rk_test_c.o(i.handle_bottom_button_c)
+    handle_top_button_c                      0x000009d5   Thumb Code    14  rk_test_c.o(i.handle_top_button_c)
+    init_globals                             0x000009ed   Thumb Code    44  rk_test_c.o(i.init_globals)
+    limit_error                              0x00000a3d   Thumb Code    54  rk_test_c.o(i.limit_error)
+    limit_speed                              0x00000a73   Thumb Code    22  rk_test_c.o(i.limit_speed)
+    load_list                                0x00000a89   Thumb Code    48  rk_test_c.o(i.load_list)
+    main_loop                                0x00000add   Thumb Code   312  rk_test_c.o(i.main_loop)
+    list_A                                   0x00000c3c   Data           0  definitions.o(.rodata)
+    list_B                                   0x00000c64   Data           0  definitions.o(.rodata)
     Commands                                 0x20000000   Data           4  rk_test_c.o(.data)
     len_commands                             0x20000004   Data           4  rk_test_c.o(.data)
     desired_position_right                   0x20000008   Data           4  rk_test_c.o(.data)
@@ -145,9 +158,11 @@ Image Symbol Table
     speed_left                               0x20000010   Data           4  rk_test_c.o(.data)
     speed_right                              0x20000014   Data           4  rk_test_c.o(.data)
     current_command                          0x20000018   Data           4  rk_test_c.o(.data)
-    SystemCoreClock                          0x2000001c   Data           4  system_armcm3.o(.data)
-    __stack_limit                            0x20000020   Data           0  startup_armcm3.o(STACK)
-    __initial_sp                             0x20000420   Data           0  startup_armcm3.o(STACK)
+    button_top_flag                          0x2000001c   Data           4  rk_test_c.o(.data)
+    button_bottom_flag                       0x20000020   Data           4  rk_test_c.o(.data)
+    SystemCoreClock                          0x20000024   Data           4  system_armcm3.o(.data)
+    __stack_limit                            0x20000028   Data           0  startup_armcm3.o(STACK)
+    __initial_sp                             0x20000428   Data           0  startup_armcm3.o(STACK)
 
 
 
@@ -155,43 +170,46 @@ Image Symbol Table
 
 Memory Map of the image
 
-  Image Entry point : 0x00000909
+  Image Entry point : 0x00000965
 
-  Load Region LR_1 (Base: 0x00000000, Size: 0x00000bc4, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x00000000, Size: 0x00000cb4, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00000ba4, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00000c8c, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x00000000   0x00000000   0x000003d0   Data   RO           62    RESET               startup_armcm3.o
+    0x00000000   0x00000000   0x000003d0   Data   RO           80    RESET               startup_armcm3.o
     0x000003d0   0x000003d0   0x00000048   Code   RO            1  * .text               rk_config_boutons.o
     0x00000418   0x00000418   0x00000068   Code   RO            6  * .text               rk_config_leds.o
     0x00000480   0x00000480   0x000001e8   Code   RO            9  * .text               rk_config_moteur.o
-    0x00000668   0x00000668   0x000000e8   Code   RO           12  * .text               rk_main.o
-    0x00000750   0x00000750   0x0000010c   Code   RO           15  * .text               rk_config_encoders.o
-    0x0000085c   0x0000085c   0x000000ac   Code   RO           18  * .text               rk_interrupthandler.o
-    0x00000908   0x00000908   0x00000038   Code   RO           63  * .text               startup_armcm3.o
-    0x00000940   0x00000940   0x00000020   Code   RO           71    i.SystemInit        system_armcm3.o
-    0x00000960   0x00000960   0x00000050   Code   RO           21    i.init_globals      rk_test_c.o
-    0x000009b0   0x000009b0   0x00000036   Code   RO           22    i.limit_error       rk_test_c.o
-    0x000009e6   0x000009e6   0x00000016   Code   RO           23    i.limit_speed       rk_test_c.o
-    0x000009fc   0x000009fc   0x00000160   Code   RO           24    i.main_loop         rk_test_c.o
-    0x00000b5c   0x00000b5c   0x00000048   Data   RO           59    .rodata             definitions.o
+    0x00000668   0x00000668   0x00000138   Code   RO           12  * .text               rk_main.o
+    0x000007a0   0x000007a0   0x0000010c   Code   RO           15  * .text               rk_config_encoders.o
+    0x000008ac   0x000008ac   0x000000b8   Code   RO           18  * .text               rk_interrupthandler.o
+    0x00000964   0x00000964   0x00000038   Code   RO           81  * .text               startup_armcm3.o
+    0x0000099c   0x0000099c   0x00000020   Code   RO           89    i.SystemInit        system_armcm3.o
+    0x000009bc   0x000009bc   0x00000018   Code   RO           21    i.handle_bottom_button_c  rk_test_c.o
+    0x000009d4   0x000009d4   0x00000018   Code   RO           22    i.handle_top_button_c  rk_test_c.o
+    0x000009ec   0x000009ec   0x00000050   Code   RO           23    i.init_globals      rk_test_c.o
+    0x00000a3c   0x00000a3c   0x00000036   Code   RO           24    i.limit_error       rk_test_c.o
+    0x00000a72   0x00000a72   0x00000016   Code   RO           25    i.limit_speed       rk_test_c.o
+    0x00000a88   0x00000a88   0x00000054   Code   RO           26    i.load_list         rk_test_c.o
+    0x00000adc   0x00000adc   0x00000160   Code   RO           27    i.main_loop         rk_test_c.o
+    0x00000c3c   0x00000c3c   0x00000050   Data   RO           77    .rodata             definitions.o
 
 
-    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x00000ba4, Size: 0x00000020, Max: 0xffffffff, ABSOLUTE)
-
-    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
-
-    0x20000000   0x00000ba4   0x0000001c   Data   RW           25    .data               rk_test_c.o
-    0x2000001c   0x00000bc0   0x00000004   Data   RW           72    .data               system_armcm3.o
-
-
-    Execution Region ER_ZI (Exec base: 0x20000020, Load base: 0x00000bc4, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x00000c8c, Size: 0x00000028, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000020        -       0x00000400   Zero   RW           60    STACK               startup_armcm3.o
+    0x20000000   0x00000c8c   0x00000024   Data   RW           28    .data               rk_test_c.o
+    0x20000024   0x00000cb0   0x00000004   Data   RW           90    .data               system_armcm3.o
+
+
+    Execution Region ER_ZI (Exec base: 0x20000028, Load base: 0x00000cb4, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x20000028        -       0x00000400   Zero   RW           78    STACK               startup_armcm3.o
 
 
 ==============================================================================
@@ -201,19 +219,19 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-         0          0         72          0          0          0   definitions.o
+         0          0         80          0          0          0   definitions.o
         72         20          0          0          0        280   rk_config_boutons.o
        268         82          0          0          0        312   rk_config_encoders.o
        104         24          0          0          0        260   rk_config_leds.o
        488        116          0          0          0        380   rk_config_moteur.o
-       172         38          0          0          0        288   rk_interrupthandler.o
-       232         20          0          0          0        276   rk_main.o
-       508         78          0         28          0       5340   rk_test_c.o
+       184         36          0          0          0        292   rk_interrupthandler.o
+       312         38          0          0          0        300   rk_main.o
+       640        132          0         36          0       6827   rk_test_c.o
         56         10        976          0       1024       1164   startup_armcm3.o
         32         18          0          4          0       3719   system_armcm3.o
 
     ----------------------------------------------------------------------
-      1932        406       1048         32       1024      12019   Object Totals
+      2156        476       1056         40       1024      13534   Object Totals
          0          0          0          0          0          0   (incl. Generated)
          0          0          0          0          0          0   (incl. Padding)
 
@@ -228,15 +246,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      1932        406       1048         32       1024      11915   Grand Totals
-      1932        406       1048         32       1024      11915   ELF Image Totals
-      1932        406       1048         32          0          0   ROM Totals
+      2156        476       1056         40       1024      13274   Grand Totals
+      2156        476       1056         40       1024      13274   ELF Image Totals
+      2156        476       1056         40          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 2980 (   2.91kB)
-    Total RW  Size (RW Data + ZI Data)              1056 (   1.03kB)
-    Total ROM Size (Code + RO Data + RW Data)       3012 (   2.94kB)
+    Total RO  Size (Code + RO Data)                 3212 (   3.14kB)
+    Total RW  Size (RW Data + ZI Data)              1064 (   1.04kB)
+    Total ROM Size (Code + RO Data + RW Data)       3252 (   3.18kB)
 
 ==============================================================================
 

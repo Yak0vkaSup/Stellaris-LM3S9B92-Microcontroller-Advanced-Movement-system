@@ -24,13 +24,15 @@ PWM1CMPA		EQU		PWM_BASE+0x098
 
 		AREA    |.text|, CODE, READONLY
 		ENTRY
-		
+		PRESERVE8 {TRUE}
 		EXPORT INTERRUPT_INIT
 		EXPORT INTERRUPT_HANDLER_0
 		EXPORT INTERRUPT_HANDLER_1
 		EXPORT PORTD_INTERRUPT_HANDLER
 		IMPORT main_loop
-		IMPORT loop2
+		IMPORT check_flag
+		IMPORT handle_top_button_c
+		IMPORT handle_bottom_button_c
 			
 INTERRUPT_INIT
 
@@ -50,22 +52,23 @@ INTERRUPT_INIT
 	mov r0, #0x2
 	str r0, [r6]
 	
-	
 	BX LR
 
 PORTD_INTERRUPT_HANDLER
     ldr r1, = GPIO_PORTD_BASE + GPIOMIS_OFFSET  
-    ldr r0, [r1]                              
+    ldr r0, [r1]
+	push {lr}
     
     cbz r0, exit_portd_handler                 ; Exit if no interrupt is active
 
     tst r0, #0x40                              ; Check PD6 
-    bne handle_top_button                      
+    blne handle_top_button_c                      
 
     tst r0, #0x80                              ; Check PD7
-    bne handle_bottom_button                
-
+    blne handle_bottom_button_c           
+	
 exit_portd_handler
+	pop {lr}
     bx lr                                      
 
 handle_top_button
@@ -77,6 +80,7 @@ handle_top_button
     ldr r0, [r3]
     eor r0, r0, #LED1_BIT                      
     str r0, [r3]
+	
 
     b exit_portd_handler                    
 

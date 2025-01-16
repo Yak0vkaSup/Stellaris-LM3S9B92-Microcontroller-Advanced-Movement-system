@@ -4,7 +4,7 @@
 	;; Si bouton poussoir fermé ==> fait clignoter les deux LED1&2 connectée au port GPIOF broches 4&5.
    	
 		AREA    |.text|, CODE, READONLY
- 
+
 ; This register controls the clock gating logic in normal Run mode
 SYSCTL_PERIPH_GPIO EQU		0x400FE108	; SYSCTL_RCGC2_R (p291 datasheet de lm3s9b92.pdf)
 
@@ -45,9 +45,12 @@ PWM1CMPA		EQU		PWM_BASE+0x098
 		IMPORT main_loop
 		IMPORT init_globals
 		EXPORT read_position
-		EXPORT loop2
-		IMPORT flag_main_loop
-			
+		EXPORT check_flag
+		IMPORT button_top_flag
+		IMPORT button_bottom_flag
+		IMPORT load_list
+		IMPORT list_A
+		IMPORT list_B
 		
 __main
 
@@ -95,11 +98,45 @@ __main
 		;BL	MOTEUR_DROIT_ON
 		;BL	MOTEUR_GAUCHE_ON
 		
-loop2
-
-		b loop2
-		
+check_flag
+		ldr r2, = button_top_flag
+		ldr r1, [r2]
+		cmp r1, #0
+		BNE load_list_a
 	
+		ldr r2, = button_bottom_flag
+		ldr r1, [r2]
+		cmp r1, #0
+		BNE load_list_b
+		b check_flag
+		
+steps	
+		bl main_loop
+		ldr r2, = button_top_flag
+		mov r1, #0
+		str r1, [r2]
+		
+		ldr r2, = button_bottom_flag
+		mov r1, #0
+		str r1, [r2]
+
+		cmp r0, #0x0
+		BLEQ steps
+		
+		b check_flag
+		
+load_list_a
+		ldr r0, = list_A
+		bl load_list
+		b steps
+		
+load_list_b
+		ldr r0, = list_B
+		bl load_list
+		b steps
+
+		
+
 		ldr r5, = QEI0_BASE+QEIPOS_OFFSET ; right
 		ldr r0, [r5]
 		
@@ -127,7 +164,7 @@ loop2
 		BLEQ MOTEUR_GAUCHE_OFF     ; Branch if Equal (Z = 1)
 		BLGT MOTEUR_GAUCHE_ARRIERE; Branch if Greater Than (N = 0 and Z = 0) 
 		
-		B loop2
+		B check_flag
 set_pwm
 		ldr	r1, =PWM0CMPA 
 		mov	r0, #0x199

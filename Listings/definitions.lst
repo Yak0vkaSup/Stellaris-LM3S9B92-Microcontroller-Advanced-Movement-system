@@ -7,38 +7,44 @@ ARM Macro Assembler    Page 1
     1 00000000         
     2 00000000                 AREA             |.rodata|, DATA, READONLY
     3 00000000         
-    4 00000000                 EXPORT           steps
-    5 00000000                 EXPORT           length_steps
-    6 00000000                 EXPORT           flag_main_loop
-    7 00000000         
-    8 00000000         length_steps
-    9 00000000 00000004        DCD              0x4         ; length 
-   10 00000004         steps
-   11 00000004 00000080        DCD              0x80        ; position_right
-   12 00000008 00000040        DCD              0x40        ; position left, we
+    4 00000000                 EXPORT           list_A
+    5 00000000                 EXPORT           list_B
+    6 00000000         
+    7 00000000         list_A
+    8 00000000 00000002        DCD              0x2         ; length 
+    9 00000004 00000000        DCD              steps_A
+   10 00000008         steps_A
+   11 00000008 00000080        DCD              0x80        ; position_right
+   12 0000000C 00000040        DCD              0x40        ; position left, we
                                                              can put negative v
                                                             alue
-   13 0000000C 000000C8        DCD              200         ; speed right
-   14 00000010 00000064        DCD              100         ; speed left
-   15 00000014         
-   16 00000014 00000040        DCD              0x40
-   17 00000018 00000080        DCD              0x80
-   18 0000001C 00000064        DCD              100
-   19 00000020 000000C8        DCD              200
-   20 00000024         
-   21 00000024 00000080        DCD              0x80        ; position_right
-   22 00000028 00000040        DCD              0x40        ; position left, we
+   13 00000010 00000064        DCD              100         ; speed right
+   14 00000014 00000032        DCD              50          ; speed left
+   15 00000018         
+   16 00000018 00000080        DCD              0x80        ; position_right
+   17 0000001C 00000040        DCD              0x40        ; position left, we
                                                              can put negative v
                                                             alue
-   23 0000002C 000000C8        DCD              200         ; speed right
-   24 00000030 00000064        DCD              100         ; speed left
-   25 00000034         
-   26 00000034 00000040        DCD              0x40
-   27 00000038 00000080        DCD              0x80
-   28 0000003C 00000064        DCD              100
-   29 00000040 000000C8        DCD              200
-   30 00000044         flag_main_loop
-   31 00000044 00000000        DCD              0
+   18 00000020 00000064        DCD              100         ; speed right
+   19 00000024 00000032        DCD              50          ; speed left
+   20 00000028         
+   21 00000028         list_B
+   22 00000028 00000002        DCD              0x2
+   23 0000002C 00000000        DCD              steps_B
+   24 00000030         steps_B
+   25 00000030 00000080        DCD              0x80        ; position_right
+   26 00000034 00000080        DCD              0x80        ; position left, we
+                                                             can put negative v
+                                                            alue
+   27 00000038 00000064        DCD              100         ; speed right
+   28 0000003C 00000064        DCD              100         ; speed left
+   29 00000040         
+   30 00000040 00000080        DCD              0x80        ; position_right
+   31 00000044 00000080        DCD              0x80        ; position left, we
+                                                             can put negative v
+                                                            alue
+   32 00000048 00000064        DCD              100         ; speed right
+   33 0000004C 00000064        DCD              100         ; speed left
                        
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\objects\definitions.d -o.\objects\definitions.o -I.\RTE\_Target_
@@ -61,29 +67,37 @@ Symbol: .rodata
    Uses
       None
 Comment: .rodata unused
-flag_main_loop 00000044
+list_A 00000000
 
-Symbol: flag_main_loop
+Symbol: list_A
    Definitions
-      At line 30 in file Definitions.s
+      At line 7 in file Definitions.s
    Uses
-      At line 6 in file Definitions.s
-Comment: flag_main_loop used once
-length_steps 00000000
+      At line 4 in file Definitions.s
+Comment: list_A used once
+list_B 00000028
 
-Symbol: length_steps
+Symbol: list_B
    Definitions
-      At line 8 in file Definitions.s
+      At line 21 in file Definitions.s
    Uses
       At line 5 in file Definitions.s
-Comment: length_steps used once
-steps 00000004
+Comment: list_B used once
+steps_A 00000008
 
-Symbol: steps
+Symbol: steps_A
    Definitions
       At line 10 in file Definitions.s
    Uses
-      At line 4 in file Definitions.s
-Comment: steps used once
-4 symbols
-339 symbols in table
+      At line 9 in file Definitions.s
+Comment: steps_A used once
+steps_B 00000030
+
+Symbol: steps_B
+   Definitions
+      At line 24 in file Definitions.s
+   Uses
+      At line 23 in file Definitions.s
+Comment: steps_B used once
+5 symbols
+340 symbols in table

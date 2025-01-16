@@ -6,7 +6,7 @@ extern void MOTEUR_DROIT_AVANT();
 extern void MOTEUR_DROIT_ARRIERE();
 extern void MOTEUR_GAUCHE_AVANT();
 extern void MOTEUR_GAUCHE_ARRIERE();
-extern int length_steps;
+
 
 #include <stdlib.h>
 #define PWM0CMPA 0x058
@@ -17,17 +17,27 @@ extern int length_steps;
 #define desired_position 0x2F6
 #define default_multiplier 3
 
+#define GPIOICR (unsigned int*) 0x4000741C	
+
 typedef struct {
 	int position_right;
 	int position_left;
 	int speed_right;
 	int speed_left;
-} Pve;
+} Command;
 
 
-extern Pve steps;
+extern Command steps;
 
-Pve* Commands;
+typedef struct {
+	int length_commands;
+	Command* Command;
+} Commands_list;
+
+extern Commands_list list_A;
+extern Commands_list list_B;
+
+Command* Commands;
 int len_commands;
 
 int desired_position_right;
@@ -38,20 +48,35 @@ int speed_right;
 
 int current_command;
 
+int button_top_flag;
+int button_bottom_flag;
+
 unsigned short limit_error(int error, int multiplier, unsigned short min, unsigned short range);
 int limit_speed(int speed, int max_speed);
 
 void init_globals(){
-	Commands = &steps;
+	Commands = 0;
 	speed_left = 0;
 	speed_right = 0;
-	len_commands = length_steps;
+	len_commands = 0;
+	desired_position_right= 0;
+	desired_position_left= 0;
+	current_command= -1;
+	button_top_flag = 0;
+	button_bottom_flag = 0;
+}
+	
+void load_list(Commands_list* list){
+	*qei_position_0 = 0;
+	*qei_position_1 = 0;
+	Commands = list -> Command;
+	len_commands = list -> length_commands;
+	speed_left = 0;
+	speed_right = 0;
 	desired_position_right= 0;
 	desired_position_left= 0;
 	current_command= -1;
 }
-	
-
 int main_loop(){
 	//MOTEUR_DROIT_ON();
 	//MOTEUR_GAUCHE_ON();
@@ -138,4 +163,15 @@ int limit_speed(int speed, int max_speed){
 	if (speed>max_speed) return max_speed;
 	if (speed<0) return 0;
 	return speed;
+}
+
+void handle_top_button_c(){
+	button_top_flag = 1;
+	*GPIOICR = 0x40;
+	
+}
+
+void handle_bottom_button_c(){
+	button_bottom_flag = 1;
+	*GPIOICR = 0x80;
 }

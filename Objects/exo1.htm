@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\exo1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\exo1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jan 16 00:50:00 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jan 16 19:23:48 2025
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -28,7 +28,7 @@ Functions with no stack information
  <LI><a href="#[29]">MOTEUR_DROIT_INVERSE</a>
  <LI><a href="#[2a]">MOTEUR_GAUCHE_INVERSE</a>
  <LI><a href="#[1b]">__main</a>
- <LI><a href="#[2b]">loop2</a>
+ <LI><a href="#[2b]">check_flag</a>
  <LI><a href="#[2c]">read_position</a>
  <LI><a href="#[1c]">ENCODER_INIT</a>
  <LI><a href="#[1d]">INTERRUPT_INIT</a>
@@ -58,7 +58,7 @@ Mutually Recursive functions
  <LI><a href="#[11]">Interrupt7_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[11]">Interrupt7_Handler</a><BR>
  <LI><a href="#[12]">Interrupt8_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[12]">Interrupt8_Handler</a><BR>
  <LI><a href="#[13]">Interrupt9_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[13]">Interrupt9_Handler</a><BR>
- <LI><a href="#[2b]">loop2</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[2b]">loop2</a><BR>
+ <LI><a href="#[2b]">check_flag</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[2b]">check_flag</a><BR>
  <LI><a href="#[2d]">Interrupt3_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[2d]">Interrupt3_Handler</a><BR>
 </UL>
 <P>
@@ -116,7 +116,7 @@ Global Symbols
 
 <P><STRONG><a name="[22]"></a>MOTEUR_DROIT_OFF</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_config_moteur.o(.text), UNUSED, KEPT)
 <BR><BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_loop
-<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop2
+<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_flag
 </UL>
 
 <P><STRONG><a name="[23]"></a>MOTEUR_GAUCHE_ON</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_config_moteur.o(.text), UNUSED, KEPT)
@@ -125,28 +125,28 @@ Global Symbols
 
 <P><STRONG><a name="[24]"></a>MOTEUR_GAUCHE_OFF</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_config_moteur.o(.text), UNUSED, KEPT)
 <BR><BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_loop
-<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop2
+<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_flag
 </UL>
 
 <P><STRONG><a name="[25]"></a>MOTEUR_DROIT_ARRIERE</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_config_moteur.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_loop
-<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop2
+<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_flag
 <LI><a href="#[1b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
 <P><STRONG><a name="[26]"></a>MOTEUR_DROIT_AVANT</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_config_moteur.o(.text), UNUSED, KEPT)
 <BR><BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_loop
-<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop2
+<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_flag
 </UL>
 
 <P><STRONG><a name="[27]"></a>MOTEUR_GAUCHE_ARRIERE</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_config_moteur.o(.text), UNUSED, KEPT)
 <BR><BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_loop
-<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop2
+<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_flag
 </UL>
 
 <P><STRONG><a name="[28]"></a>MOTEUR_GAUCHE_AVANT</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_config_moteur.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_loop
-<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop2
+<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_flag
 <LI><a href="#[1b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
@@ -165,8 +165,14 @@ Global Symbols
 <LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BOUTON_INIT
 </UL>
 
-<P><STRONG><a name="[2b]"></a>loop2</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_main.o(.text), UNUSED, KEPT)
-<BR><BR>[Calls]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop2
+<P><STRONG><a name="[2b]"></a>check_flag</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_main.o(.text), UNUSED, KEPT)
+<BR><BR>[Stack]<UL><LI>Max Depth = 68 + Unknown Stack Size
+ + In Cycle
+<LI>Call Chain = check_flag &rArr;  check_flag (Cycle)
+</UL>
+<BR>[Calls]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_loop
+<LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;load_list
+<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_flag
 <LI><a href="#[28]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_GAUCHE_AVANT
 <LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_GAUCHE_ARRIERE
 <LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_DROIT_AVANT
@@ -174,7 +180,7 @@ Global Symbols
 <LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_GAUCHE_OFF
 <LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_DROIT_OFF
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop2
+<BR>[Called By]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_flag
 </UL>
 
 <P><STRONG><a name="[2c]"></a>read_position</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_main.o(.text), UNUSED, KEPT)
@@ -188,6 +194,9 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[d]"></a>PORTD_INTERRUPT_HANDLER</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_interrupthandler.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_top_button_c
+<LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_bottom_button_c
+</UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_armcm3.o(RESET)
 </UL>
 <P><STRONG><a name="[14]"></a>INTERRUPT_HANDLER_0</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rk_interrupthandler.o(.text))
@@ -333,21 +342,38 @@ Global Symbols
 <P><STRONG><a name="[16]"></a>SystemInit</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, system_armcm3.o(i.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_armcm3.o(.text)
 </UL>
-<P><STRONG><a name="[2e]"></a>init_globals</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, rk_test_c.o(i.init_globals))
+<P><STRONG><a name="[32]"></a>handle_bottom_button_c</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, rk_test_c.o(i.handle_bottom_button_c))
+<BR><BR>[Called By]<UL><LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PORTD_INTERRUPT_HANDLER
+</UL>
+
+<P><STRONG><a name="[31]"></a>handle_top_button_c</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, rk_test_c.o(i.handle_top_button_c))
+<BR><BR>[Called By]<UL><LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PORTD_INTERRUPT_HANDLER
+</UL>
+
+<P><STRONG><a name="[2e]"></a>init_globals</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, rk_test_c.o(i.init_globals))
 <BR><BR>[Called By]<UL><LI><a href="#[1b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[31]"></a>limit_error</STRONG> (Thumb, 54 bytes, Stack size 20 bytes, rk_test_c.o(i.limit_error), UNUSED)
+<P><STRONG><a name="[34]"></a>limit_error</STRONG> (Thumb, 54 bytes, Stack size 20 bytes, rk_test_c.o(i.limit_error), UNUSED, KEPT)
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = limit_error
+</UL>
+<BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_loop
+</UL>
+
+<P><STRONG><a name="[33]"></a>limit_speed</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, rk_test_c.o(i.limit_speed), UNUSED, KEPT)
 <BR><BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_loop
 </UL>
 
-<P><STRONG><a name="[30]"></a>limit_speed</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, rk_test_c.o(i.limit_speed), UNUSED)
-<BR><BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_loop
+<P><STRONG><a name="[30]"></a>load_list</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, rk_test_c.o(i.load_list), UNUSED, KEPT)
+<BR><BR>[Called By]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_flag
 </UL>
 
-<P><STRONG><a name="[2f]"></a>main_loop</STRONG> (Thumb, 312 bytes, Stack size 48 bytes, rk_test_c.o(i.main_loop), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;limit_speed
-<LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;limit_error
+<P><STRONG><a name="[2f]"></a>main_loop</STRONG> (Thumb, 312 bytes, Stack size 48 bytes, rk_test_c.o(i.main_loop), UNUSED, KEPT)
+<BR><BR>[Stack]<UL><LI>Max Depth = 68 + Unknown Stack Size
+<LI>Call Chain = main_loop &rArr; limit_error
+</UL>
+<BR>[Calls]<UL><LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;limit_speed
+<LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;limit_error
 <LI><a href="#[28]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_GAUCHE_AVANT
 <LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_GAUCHE_ARRIERE
 <LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_DROIT_AVANT
@@ -356,6 +382,8 @@ Global Symbols
 <LI><a href="#[23]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_GAUCHE_ON
 <LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_DROIT_OFF
 <LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MOTEUR_DROIT_ON
+</UL>
+<BR>[Called By]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_flag
 </UL>
 <P>
 <H3>
